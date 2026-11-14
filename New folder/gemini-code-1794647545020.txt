@@ -1,0 +1,10 @@
+name = "ban-quan-tri-noxh-becamex-khu1b"
+main = "worker.js"
+compatibility_date = "2026-11-14"
+
+# Workers subdomain: ban-quan-tri-noxh-becamex-khu1b.vandienprint.workers.dev
+
+[assets]
+directory = "."
+html_handling = "auto-trailing-slash"
+not_found_handling = "404-page"

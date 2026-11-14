@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="130" viewBox="0 0 180 130">
+  <rect width="180" height="130" fill="#DC3545"/>
+  <text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle" fill="#fff" font-family="Arial" font-size="16" font-weight="bold">Phòng cháy chữa cháy</text>
+  <text x="50%" y="65%" dominant-baseline="middle" text-anchor="middle" fill="#fff" font-family="Arial" font-size="12">Hướng dẫn an toàn</text>
+</svg>

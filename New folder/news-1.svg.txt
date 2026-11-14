@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="130" viewBox="0 0 180 130">
+  <rect width="180" height="130" fill="#FFC107"/>
+  <text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle" fill="#333" font-family="Arial" font-size="16" font-weight="bold">Trung thu 2026</text>
+  <text x="50%" y="65%" dominant-baseline="middle" text-anchor="middle" fill="#333" font-family="Arial" font-size="12">Tổ chức cho thiếu nhi</text>
+</svg>
