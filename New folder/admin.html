@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#075632">
+  <meta name="robots" content="noindex, nofollow"><title>Quản trị Ban Quản Trị</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="admin.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/js/all.min.js" defer></script><script src="admin.js" defer></script>
+</head>
+<body class="admin-page">
+  <header class="admin-top"><div class="container admin-top-inner"><a href="index.html" class="admin-brand"><i class="fa-solid fa-shield-halved"></i><span><strong>BAN QUẢN TRỊ</strong><small>TRANG QUẢN LÝ NỘI DUNG</small></span></a><a class="back-link" href="index.html"><i class="fa-solid fa-arrow-left"></i> Về trang chủ</a></div></header>
+  <main class="container admin-main">
+    <section class="admin-card">
+      <div class="admin-title"><div><span class="eyebrow">KHU VỰC NỘI BỘ</span><h1><i class="fa-solid fa-lock"></i> Quản trị nội dung</h1><p>Đăng thông báo và hoạt động. Chỉ tài khoản BQT đã xác thực mới được đăng bài.</p></div><span class="secure-pill"><i class="fa-solid fa-shield-halved"></i> Phiên bảo mật</span></div>
+      <form class="admin-form" id="login-form"><label for="password">Mật khẩu quản trị</label><div class="password-row"><input id="password" name="password" type="password" autocomplete="current-password" required><button type="submit"><i class="fa-solid fa-right-to-bracket"></i> Đăng nhập</button></div><p class="status" role="status" aria-live="polite"></p></form>
+      <section id="dashboard" hidden>
+        <div class="dashboard-heading"><div><h2>Đăng nội dung mới</h2><p>Nội dung sau khi đăng sẽ hiển thị công khai trên trang chủ.</p></div><button class="logout-button" id="logout" type="button"><i class="fa-solid fa-arrow-right-from-bracket"></i> Đăng xuất</button></div>
+        <form class="admin-form post-form" id="post-form">
+          <label for="title">Tiêu đề *</label><input id="title" name="title" maxlength="120" required placeholder="Nhập tiêu đề">
+          <div class="form-row"><div><label for="kind">Loại nội dung</label><select id="kind" name="kind"><option value="notice">Thông báo</option><option value="activity">Hoạt động</option></select></div><div><label for="date">Ngày đăng *</label><input id="date" name="date" type="date" required></div></div>
+          <label for="body">Nội dung</label><textarea id="body" name="body" rows="5" maxlength="5000" placeholder="Nhập nội dung đăng tải..."></textarea>
+          <label for="file">Ảnh hoặc PDF đính kèm <small>(không bắt buộc, tối đa 1,5 MB)</small></label><input id="file" name="file" type="file" accept="image/jpeg,image/png,image/webp,image/gif,application/pdf">
+          <button type="submit" class="publish-button"><i class="fa-solid fa-cloud-arrow-up"></i> Đăng lên website</button><p class="status" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+    </section>
+    <p class="security-note"><i class="fa-solid fa-circle-info"></i> Góp ý của cư dân không xuất hiện trong trang quản trị này. Chỉ nội dung do BQT đăng được hiển thị công khai.</p>
+  </main>
+</body>
+</html>
