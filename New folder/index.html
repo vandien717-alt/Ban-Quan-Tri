@@ -1,492 +1,129 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ban Quản Trị - Nhà Ở Xã Hội Becamex - Khu 1B, Mỹ Phước</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <style>
-    /* CSS Cơ bản cho giao diện */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Roboto', sans-serif;
-    }
-    body {
-      background-color: #f4f6f9;
-      color: #333;
-      line-height: 1.6;
-    }
-    .container {
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 15px;
-    }
-    /* Header */
-    .header-top {
-      background-color: #fff;
-      padding: 15px 0;
-      border-bottom: 1px solid #e1e8ed;
-    }
-    .header-top-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-    .logo-img {
-      width: 50px;
-      height: 50px;
-    }
-    .logo-text h1 {
-      font-size: 20px;
-      color: #0056b3;
-      font-weight: 900;
-    }
-    .logo-text p {
-      font-size: 13px;
-      font-weight: 700;
-      color: #555;
-    }
-    .slogan {
-      font-size: 12px;
-      color: #28a745;
-      font-style: italic;
-    }
-    .search-box {
-      position: relative;
-    }
-    .search-box input {
-      padding: 8px 15px 8px 35px;
-      border: 1px solid #ccc;
-      border-radius: 20px;
-      outline: none;
-      width: 250px;
-    }
-    .search-box i {
-      position: absolute;
-      left: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #777;
-    }
-    /* Navigation */
-    .main-nav {
-      background-color: #0056b3;
-    }
-    .nav-menu {
-      display: flex;
-      list-style: none;
-      flex-wrap: wrap;
-    }
-    .nav-menu li a {
-      display: block;
-      color: #fff;
-      padding: 12px 18px;
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 500;
-      transition: background 0.3s;
-    }
-    .nav-menu li a:hover, .nav-menu li a.active {
-      background-color: #004085;
-    }
-    /* Hero Section */
-    .hero {
-      position: relative;
-      background: linear-gradient(135deg, #0056b3, #0080ff);
-      color: #fff;
-      padding: 60px 0;
-      text-align: center;
-    }
-    .hero-content h2 {
-      font-size: 28px;
-      line-height: 1.4;
-    }
-    /* Services */
-    .services {
-      padding: 40px 0;
-    }
-    .service-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 20px;
-    }
-    .service-card {
-      background: #fff;
-      padding: 25px 15px;
-      text-align: center;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-      transition: transform 0.3s;
-    }
-    .service-card:hover {
-      transform: translateY(-5px);
-    }
-    .service-card i {
-      font-size: 32px;
-      color: #0056b3;
-      margin-bottom: 10px;
-    }
-    .service-card h3 {
-      font-size: 16px;
-      margin-bottom: 5px;
-    }
-    .service-card p {
-      font-size: 13px;
-      color: #666;
-    }
-    /* Content Section */
-    .content {
-      padding: 20px 0 40px;
-    }
-    .content-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-      gap: 20px;
-    }
-    .content-box {
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-      overflow: hidden;
-    }
-    .box-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 20px;
-      border-bottom: 1px solid #eee;
-      background-color: #f8f9fa;
-    }
-    .box-header h3 {
-      font-size: 15px;
-      color: #0056b3;
-    }
-    .view-all {
-      font-size: 13px;
-      color: #0056b3;
-      text-decoration: none;
-    }
-    .box-body {
-      padding: 15px 20px;
-    }
-    .news-item, .doc-item {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 15px;
-      align-items: center;
-    }
-    .news-item:last-child, .doc-item:last-child {
-      margin-bottom: 0;
-    }
-    .news-item img {
-      width: 60px;
-      height: 60px;
-      object-fit: cover;
-      border-radius: 4px;
-    }
-    .news-info h4, .doc-info h4 {
-      font-size: 14px;
-      margin-bottom: 5px;
-      color: #333;
-    }
-    .news-info span, .doc-info span {
-      font-size: 12px;
-      color: #888;
-    }
-    .pdf-icon {
-      font-size: 28px;
-      color: #dc3545;
-    }
-    /* Finance Box */
-    .finance-chart {
-      display: flex;
-      align-items: flex-end;
-      gap: 15px;
-      height: 100px;
-      padding: 10px 0;
-      border-bottom: 1px dashed #ddd;
-      margin-bottom: 15px;
-    }
-    .bar {
-      flex: 1;
-      background-color: #cfe2ff;
-      border-radius: 4px 4px 0 0;
-    }
-    .bar.highlight {
-      background-color: #0056b3;
-    }
-    .finance-info h2 {
-      color: #28a745;
-      font-size: 22px;
-      margin: 5px 0;
-    }
-    .detail-link {
-      font-size: 13px;
-      color: #0056b3;
-      text-decoration: none;
-    }
-    /* Banner */
-    .banner {
-      background-color: #e2e8f0;
-      padding: 30px 0;
-      margin-bottom: 30px;
-    }
-    .banner-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .banner-left {
-      font-size: 18px;
-      font-weight: 700;
-      color: #0056b3;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    /* Footer */
-    .footer {
-      background-color: #1a202c;
-      color: #a0aec0;
-      padding: 40px 0;
-      font-size: 14px;
-    }
-    .footer-inner {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 30px;
-    }
-    .footer-col {
-      display: flex;
-      gap: 15px;
-    }
-    .footer-col i {
-      font-size: 20px;
-      color: #3182ce;
-      margin-top: 3px;
-    }
-    .footer-col strong {
-      color: #fff;
-    }
-    .footer-right {
-      flex-direction: column;
-      gap: 5px;
-    }
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#075632">
+  <meta name="description" content="Thông báo, văn bản và hoạt động của Ban Quản Trị Nhà ở xã hội Becamex – Khu 1B, Mỹ Phước.">
+  <title>Ban Quản Trị | Nhà ở xã hội Becamex – Khu 1B</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/js/all.min.js" defer></script>
+  <script src="app.js" defer></script>
 </head>
 <body>
-  <!-- Header -->
-  <header class="header">
-    <div class="header-top">
-      <div class="container header-top-inner">
-        <div class="logo">
-          <i class="fas fa-building fa-2x" style="color: #0056b3;"></i>
-          <div class="logo-text">
-            <h1>BAN QUẢN TRỊ</h1>
-            <p>NHÀ Ở XÃ HỘI BECAMEX – KHU 1B, MỸ PHƯỚC</p>
-            <span class="slogan">Minh bạch – Trách nhiệm – Kết nối cư dân</span>
-          </div>
-        </div>
-        <div class="search-box">
-          <i class="fas fa-search"></i>
-          <input type="text" placeholder="Tìm kiếm thông tin...">
-        </div>
+  <header class="site-header" id="top">
+    <div class="masthead">
+      <div class="container masthead-inner">
+        <a class="brand" href="#top" aria-label="Ban Quản Trị - Trang chủ">
+          <span class="brand-mark" aria-hidden="true"><i class="fa-solid fa-building"></i><span class="brand-swoosh"></span></span>
+          <span class="brand-copy">
+            <strong>BAN QUẢN TRỊ</strong>
+            <span>NHÀ Ở XÃ HỘI BECAMEX – KHU 1B, MỸ PHƯỚC</span>
+            <em>Minh bạch – Trách nhiệm – Kết nối cư dân</em>
+          </span>
+        </a>
+        <label class="search-box">
+          <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+          <input id="site-search" type="search" placeholder="Tìm kiếm thông tin..." aria-label="Tìm kiếm thông tin">
+        </label>
       </div>
     </div>
-
-    <!-- Navigation -->
-    <nav class="main-nav">
+    <nav class="main-nav" aria-label="Điều hướng chính">
       <div class="container">
-        <ul class="nav-menu">
-          <li><a href="#" class="active"><i class="fas fa-home"></i> Trang chủ</a></li>
-          <li><a href="#">Giới thiệu BQT</a></li>
-          <li><a href="#">Thông báo</a></li>
-          <li><a href="#">Văn bản BQT</a></li>
-          <li><a href="#">Tài chính</a></li>
-          <li><a href="#">An ninh – PCCC</a></li>
-          <li><a href="#">Bảo trì – Sửa chữa</a></li>
-          <li><a href="#">Liên hệ – Góp ý</a></li>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-links"><i class="fa-solid fa-bars"></i> Danh mục</button>
+        <ul class="nav-links" id="nav-links">
+          <li><a class="active" href="#top"><i class="fa-solid fa-house"></i> Trang chủ</a></li>
+          <li><a href="#about">Giới thiệu BQT</a></li>
+          <li><a href="#notices">Thông báo</a></li>
+          <li><a href="#documents">Văn bản BQT</a></li>
+          <li><a href="#finance">Tài chính</a></li>
+          <li><a href="#activities">Hoạt động</a></li>
+          <li><a href="#contact">Liên hệ – Góp ý</a></li>
         </ul>
       </div>
     </nav>
   </header>
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="container hero-content">
-      <h2>Cùng chung tay xây dựng<br><strong>KHU DÂN CƯ VĂN MINH<br>– AN TOÀN – HẠNH PHÚC</strong></h2>
-    </div>
-  </section>
-
-  <!-- Service Cards -->
-  <section class="services">
-    <div class="container">
-      <div class="service-grid">
-        <div class="service-card">
-          <i class="fas fa-bullhorn"></i>
-          <h3>01. Thông báo</h3>
-          <p>Thông tin đến cư dân</p>
-        </div>
-        <div class="service-card">
-          <i class="fas fa-file-alt"></i>
-          <h3>02. Văn bản BQT</h3>
-          <p>Công văn, quyết định</p>
-        </div>
-        <div class="service-card">
-          <i class="fas fa-wallet"></i>
-          <h3>03. Tài chính</h3>
-          <p>Thu chi, báo cáo</p>
-        </div>
-        <div class="service-card">
-          <i class="fas fa-shield-alt"></i>
-          <h3>04. An ninh – PCCC</h3>
-          <p>An toàn khu dân cư</p>
-        </div>
-        <div class="service-card">
-          <i class="fas fa-tools"></i>
-          <h3>05. Bảo trì – Sửa chữa</h3>
-          <p>Hạ tầng, thiết bị</p>
-        </div>
-        <div class="service-card">
-          <i class="fas fa-user-friends"></i>
-          <h3>06. Liên hệ – Góp ý</h3>
-          <p>Tiếp nhận phản ánh</p>
-        </div>
+  <main>
+    <section class="hero" id="about">
+      <div class="container hero-inner">
+        <p class="hero-kicker">Cùng chung tay xây dựng</p>
+        <h1>KHU DÂN CƯ VĂN MINH<br><span>– AN TOÀN – HẠNH PHÚC</span></h1>
+        <p class="hero-note">Chung sức vì môi trường sống xanh, an toàn và gắn kết.</p>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Content Section -->
-  <section class="content">
-    <div class="container">
-      <div class="content-grid">
-        <!-- Tin tức nổi bật -->
-        <div class="content-box news-box">
-          <div class="box-header">
-            <h3><i class="fas fa-bullhorn"></i> TIN TỨC NỔI BẬT</h3>
-            <a href="#" class="view-all">Xem tất cả <i class="fas fa-arrow-right"></i></a>
-          </div>
-          <div class="box-body">
-            <div class="news-item">
-              <i class="fas fa-image fa-3x" style="color: #cbd5e0;"></i>
-              <div class="news-info">
-                <h4>Thông báo về việc tổ chức Trung thu cho các cháu thiếu nhi năm 2026</h4>
-                <span><i class="far fa-calendar-alt"></i> 16/09/2026</span>
-              </div>
-            </div>
-            <div class="news-item">
-              <i class="fas fa-image fa-3x" style="color: #cbd5e0;"></i>
-              <div class="news-info">
-                <h4>Hướng dẫn phòng cháy chữa cháy trong khu dân cư</h4>
-                <span><i class="far fa-calendar-alt"></i> 10/09/2026</span>
-              </div>
-            </div>
-            <div class="news-item">
-              <i class="fas fa-image fa-3x" style="color: #cbd5e0;"></i>
-              <div class="news-info">
-                <h4>Kế hoạch bảo trì thang máy và hệ thống thiết bị tòa nhà</h4>
-                <span><i class="far fa-calendar-alt"></i> 05/09/2026</span>
-              </div>
-            </div>
-          </div>
+    <section class="services container" aria-label="Danh mục tiện ích">
+      <a class="service-card" href="#notices"><i class="fa-solid fa-bullhorn"></i><strong>01. Thông báo</strong><span>Thông tin đến cư dân</span></a>
+      <a class="service-card" href="#documents"><i class="fa-solid fa-file-lines"></i><strong>02. Văn bản BQT</strong><span>Công văn, quyết định</span></a>
+      <a class="service-card" href="#finance"><i class="fa-solid fa-wallet"></i><strong>03. Tài chính</strong><span>Thu chi, báo cáo</span></a>
+      <a class="service-card" href="#activities"><i class="fa-solid fa-shield-halved"></i><strong>04. An ninh – PCCC</strong><span>An toàn khu dân cư</span></a>
+      <a class="service-card" href="#activities"><i class="fa-solid fa-screwdriver-wrench"></i><strong>05. Bảo trì – Sửa chữa</strong><span>Hạ tầng, thiết bị</span></a>
+      <a class="service-card" href="#contact"><i class="fa-solid fa-people-group"></i><strong>06. Liên hệ – Góp ý</strong><span>Tiếp nhận phản ánh</span></a>
+    </section>
+
+    <section class="container dashboard" aria-label="Thông tin mới nhất">
+      <section class="panel" id="notices">
+        <div class="panel-heading"><h2><i class="fa-solid fa-bullhorn"></i> TIN TỨC NỔI BẬT</h2><a href="#notice-list">Xem tin mới <i class="fa-solid fa-arrow-right"></i></a></div>
+        <div class="panel-body news-list" id="notice-list" aria-live="polite"></div>
+      </section>
+
+      <section class="panel" id="documents">
+        <div class="panel-heading"><h2><i class="fa-solid fa-file-lines"></i> VĂN BẢN MỚI</h2><a href="#upload">Cập nhật <i class="fa-solid fa-arrow-right"></i></a></div>
+        <div class="panel-body document-list">
+          <article class="document-item"><i class="fa-solid fa-file-pdf pdf-icon"></i><div><h3>Thông báo số 18/TB-BQT về tặng quà Trung thu</h3><time datetime="2026-09-08">08/09/2026</time></div></article>
+          <article class="document-item"><i class="fa-solid fa-file-pdf pdf-icon"></i><div><h3>Quyết định số 12/QĐ-BQT về công tác bảo trì</h3><time datetime="2026-09-05">05/09/2026</time></div></article>
+          <article class="document-item"><i class="fa-solid fa-file-pdf pdf-icon"></i><div><h3>Biên bản họp BQT ngày 01/09/2026</h3><time datetime="2026-09-01">01/09/2026</time></div></article>
         </div>
+      </section>
 
-        <!-- Văn bản mới -->
-        <div class="content-box docs-box">
-          <div class="box-header">
-            <h3><i class="fas fa-file-alt"></i> VĂN BẢN MỚI</h3>
-            <a href="#" class="view-all">Xem tất cả <i class="fas fa-arrow-right"></i></a>
-          </div>
-          <div class="box-body">
-            <div class="doc-item">
-              <i class="fas fa-file-pdf pdf-icon"></i>
-              <div class="doc-info">
-                <h4>Thông báo số 18/TB-BQT về tặng quà Trung thu</h4>
-                <span><i class="far fa-calendar-alt"></i> 08/09/2026</span>
-              </div>
-            </div>
-            <div class="doc-item">
-              <i class="fas fa-file-pdf pdf-icon"></i>
-              <div class="doc-info">
-                <h4>Quyết định số 12/QĐ-BQT về công tác bảo trì</h4>
-                <span><i class="far fa-calendar-alt"></i> 05/09/2026</span>
-              </div>
-            </div>
-            <div class="doc-item">
-              <i class="fas fa-file-pdf pdf-icon"></i>
-              <div class="doc-info">
-                <h4>Biên bản họp BQT ngày 01/09/2026</h4>
-                <span><i class="far fa-calendar-alt"></i> 01/09/2026</span>
-              </div>
-            </div>
-          </div>
+      <section class="panel finance-panel" id="finance">
+        <div class="panel-heading"><h2><i class="fa-solid fa-sack-dollar"></i> THÔNG TIN TÀI CHÍNH</h2></div>
+        <div class="panel-body finance-body">
+          <div class="chart" aria-label="Biểu đồ thu minh họa"><i style="--height:28%"></i><i style="--height:48%"></i><i style="--height:70%"></i><i style="--height:100%"></i></div>
+          <div class="finance-info"><span>Thu trong tháng 09/2026</span><strong>159.000.000 đ</strong><a href="#contact">Chi tiết thu chi <i class="fa-solid fa-chevron-right"></i></a></div>
         </div>
+      </section>
 
-        <!-- Thông tin tài chính -->
-        <div class="content-box finance-box">
-          <div class="box-header">
-            <h3><i class="fas fa-sack-dollar"></i> THÔNG TIN TÀI CHÍNH</h3>
-            <a href="#" class="view-all">Xem chi tiết <i class="fas fa-arrow-right"></i></a>
-          </div>
-          <div class="box-body">
-            <div class="finance-chart">
-              <div class="bar" style="height: 25%"></div>
-              <div class="bar" style="height: 45%"></div>
-              <div class="bar" style="height: 65%"></div>
-              <div class="bar" style="height: 85%"></div>
-              <div class="bar highlight" style="height: 100%"></div>
+      <section class="panel activities-panel" id="activities">
+        <div class="panel-heading"><h2><i class="fa-solid fa-people-group"></i> HOẠT ĐỘNG BAN QUẢN TRỊ</h2><a href="#upload">Đăng hoạt động <i class="fa-solid fa-arrow-right"></i></a></div>
+        <div class="panel-body activity-list" id="activity-list" aria-live="polite"></div>
+      </section>
+
+      <section class="panel upload-panel" id="upload">
+        <div class="panel-heading"><h2><i class="fa-solid fa-cloud-arrow-up"></i> CẬP NHẬT THÔNG TIN</h2></div>
+        <div class="panel-body">
+          <p class="form-intro">Đăng thông báo hoặc hoạt động mới của Ban Quản Trị.</p>
+          <form id="post-form">
+            <label for="post-title">Tiêu đề <span aria-hidden="true">*</span></label>
+            <input id="post-title" name="title" type="text" maxlength="120" required placeholder="Nhập tiêu đề">
+            <div class="form-row">
+              <div><label for="post-type">Loại nội dung</label><select id="post-type" name="type"><option value="notice">Thông báo</option><option value="activity">Hoạt động</option></select></div>
+              <div><label for="post-date">Ngày đăng</label><input id="post-date" name="date" type="date" required></div>
             </div>
-            <div class="finance-info">
-              <p>Thu trong tháng 09/2026</p>
-              <h2>159.000.000 đ</h2>
-              <a href="#" class="detail-link">Chi tiết thu chi <i class="fas fa-chevron-right"></i></a>
-            </div>
-          </div>
+            <label for="post-body">Nội dung</label>
+            <textarea id="post-body" name="body" rows="3" maxlength="1000" placeholder="Mô tả ngắn nội dung..."></textarea>
+            <label for="post-file">Ảnh hoặc tài liệu đính kèm <span class="muted">(không bắt buộc, tối đa 1,5 MB)</span></label>
+            <input id="post-file" name="file" type="file" accept="image/*,.pdf">
+            <button class="submit-button" type="submit"><i class="fa-solid fa-paper-plane"></i> Đăng nội dung</button>
+            <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+          </form>
+          <p class="storage-note"><i class="fa-solid fa-circle-info"></i> Bản mẫu lưu nội dung trên trình duyệt này. Để cư dân cùng xem và quản trị an toàn, cần kết nối máy chủ và tài khoản đăng nhập.</p>
         </div>
-      </div>
-    </div>
-  </section>
+      </section>
+    </section>
 
-  <!-- Banner -->
-  <section class="banner">
-    <div class="container banner-inner">
-      <div class="banner-left">
-        <i class="fas fa-shield-check"></i>
-        <span>Vì một cộng đồng cư dân đoàn kết, văn minh và phát triển</span>
-      </div>
-    </div>
-  </section>
+    <section class="community-banner"><div class="container"><i class="fa-solid fa-shield-halved"></i><strong>Vì một cộng đồng cư dân đoàn kết, văn minh và phát triển</strong></div></section>
+  </main>
 
-  <!-- Footer -->
-  <footer class="footer">
+  <footer class="site-footer" id="contact">
     <div class="container footer-inner">
-      <div class="footer-col">
-        <i class="fas fa-map-marker-alt"></i>
-        <div>
-          <strong>Địa chỉ văn phòng BQT:</strong>
-          <p>A2.1.15, Block A2, Tầng 1,<br>Khu phố 6, Phường Thới Hòa, TP Hồ Chí Minh</p>
-        </div>
-      </div>
-      <div class="footer-col">
-        <i class="fas fa-envelope"></i>
-        <div>
-          <strong>Email liên hệ:</strong>
-          <p>bqt.noxh.becamex1b@gmail.com</p>
-        </div>
-      </div>
-      <div class="footer-col footer-right">
-        <p>Bản quyền © 2026 - Ban Quản Trị NOXH Becamex – Khu 1B, Mỹ Phước</p>
-        <p><em>Cùng nhau xây dựng cuộc sống tốt đẹp hơn!</em></p>
-      </div>
+      <div class="footer-contact"><i class="fa-solid fa-location-dot"></i><p><strong>Địa chỉ văn phòng BQT:</strong><br>A2.1.15, Block A2, Tầng 1,<br>Khu phố 6, Phường Thới Hòa, TP Hồ Chí Minh</p></div>
+      <div class="footer-contact"><i class="fa-solid fa-envelope"></i><p><strong>Email liên hệ:</strong><br><a href="mailto:bqt.noxh.becamex1b@gmail.com">bqt.noxh.becamex1b@gmail.com</a></p></div>
+      <div class="copyright"><p>Bản quyền © <span id="current-year">2026</span> - Ban Quản Trị NOXH Becamex – Khu 1B, Mỹ Phước</p><em>Cùng nhau xây dựng cuộc sống tốt đẹp hơn!</em></div>
     </div>
   </footer>
 </body>
