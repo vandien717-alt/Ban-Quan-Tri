@@ -1,8 +1,17 @@
 const MAX_FILE_BYTES = 1.5 * 1024 * 1024;
 async function api(path, options = {}) {
-  const response = await fetch(path, { credentials: 'same-origin', ...options, headers: { ...(options.headers || {}) } });
+  let response;
+  try {
+    response = await fetch(path, { credentials: 'same-origin', ...options, headers: { ...(options.headers || {}) } });
+  } catch {
+    throw new Error('Không kết nối được máy chủ. Kiểm tra mạng và thử tải lại trang.');
+  }
+  const contentType = response.headers.get('content-type') || '';
+  if (!contentType.includes('application/json')) {
+    throw new Error(`API quản trị chưa được Worker xử lý (HTTP ${response.status}). Hãy triển khai lại Worker bằng cấu hình New folder/wrangler.toml, không chỉ tải file tĩnh.`);
+  }
   const data = await response.json().catch(() => ({}));
-  if (!response.ok) throw new Error(data.error || 'Có lỗi xảy ra, vui lòng thử lại.');
+  if (!response.ok) throw new Error(data.error || `Máy chủ trả lỗi HTTP ${response.status}.`);
   return data;
 }
 function showStatus(element, message, error = false) { element.textContent = message; element.classList.toggle('error', error); }
@@ -35,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       await api('/api/admin/posts', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ title: postForm.elements.title.value, kind: postForm.elements.kind.value, date: postForm.elements.date.value, body: postForm.elements.body.value, file: attachment }) });
       postForm.reset(); dateInput.value = new Date().toISOString().slice(0, 10); showStatus(postStatus, 'Đã đăng nội dung lên website.');
-    } catch (error) { showStatus(postStatus, error.message, true); if (error.message.includes('đăng nhập')) setLoggedIn(false); }
+    } catch (error) { showStatus(postStatus, error.message, true); if (error.message.includes('phiên') || error.message.includes('đăng nhập')) setLoggedIn(false); }
     finally { button.disabled = false; }
   });
   checkSession();

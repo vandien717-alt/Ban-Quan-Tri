@@ -1,7 +1,6 @@
 const COOKIE_NAME = 'bqt_admin_session';
 const SESSION_SECONDS = 8 * 60 * 60;
 const MAX_JSON_BYTES = 2 * 1024 * 1024;
-const ALLOWED_ORIGIN = null;
 
 function json(data, status = 200, headers = {}) {
   return new Response(JSON.stringify(data), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store', ...headers } });
@@ -16,23 +15,20 @@ function fromBase64url(value) {
   const binary = atob(normalized + '='.repeat((4 - normalized.length % 4) % 4));
   return Uint8Array.from(binary, char => char.charCodeAt(0));
 }
-async function hmac(secret, value) {
-  const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign', 'verify']);
-  return new Uint8Array(await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(value)));
-}
 async function createSession(secret) {
   const payload = base64url(new TextEncoder().encode(JSON.stringify({ exp: Math.floor(Date.now() / 1000) + SESSION_SECONDS })));
-  const signature = base64url(await hmac(secret, payload));
-  return `${payload}.${signature}`;
+  const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+  const signature = new Uint8Array(await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(payload)));
+  return `${payload}.${base64url(signature)}`;
 }
 async function validSession(request, secret) {
   const cookie = request.headers.get('Cookie') || '';
   const match = cookie.split(';').map(part => part.trim()).find(part => part.startsWith(`${COOKIE_NAME}=`));
   if (!match) return false;
-  const token = decodeURIComponent(match.slice(COOKIE_NAME.length + 1));
-  const [payload, signature, extra] = token.split('.');
-  if (!payload || !signature || extra) return false;
   try {
+    const token = decodeURIComponent(match.slice(COOKIE_NAME.length + 1));
+    const [payload, signature, extra] = token.split('.');
+    if (!payload || !signature || extra) return false;
     const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['verify']);
     const verified = await crypto.subtle.verify('HMAC', key, fromBase64url(signature), new TextEncoder().encode(payload));
     const claims = JSON.parse(new TextDecoder().decode(fromBase64url(payload)));
@@ -55,7 +51,11 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     if (!url.pathname.startsWith('/api/')) return env.ASSETS.fetch(request);
-    if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: { 'access-control-allow-origin': url.origin, 'access-control-allow-methods': 'GET, POST, OPTIONS', 'access-control-allow-headers': 'content-type', 'access-control-max-age': '86400', 'vary': 'Origin' } });
+    if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: { 'access-control-allow-origin': url.origin, 'access-control-allow-methods': 'GET, POST, OPTIONS', 'access-control-allow-headers': 'content-type', 'access-control-max-age': '86400', vary: 'Origin' } });
+
+    if (url.pathname === '/api/health' && request.method === 'GET') {
+      return json({ worker: true, adminConfigured: Boolean(env.ADMIN_PASSWORD && env.SESSION_SECRET && env.SESSION_SECRET.length >= 32), postsConfigured: Boolean(env.BQT_POSTS), mailConfigured: Boolean(env.RESEND_API_KEY && env.BQT_EMAIL && env.RESEND_FROM) });
+    }
 
     if (url.pathname === '/api/posts' && request.method === 'GET') {
       if (!env.BQT_POSTS) return json({ posts: [] });
@@ -67,7 +67,7 @@ export default {
 
     if (url.pathname === '/api/feedback' && request.method === 'POST') {
       if (!originAllowed(request)) return json({ error: 'Yêu cầu không hợp lệ.' }, 403);
-      if (!env.RESEND_API_KEY || !env.BQT_EMAIL || !env.RESEND_FROM) return json({ error: 'Hệ thống nhận góp ý chưa được cấu hình. Vui lòng liên hệ Ban Quản Trị.' }, 503);
+      if (!env.RESEND_API_KEY || !env.BQT_EMAIL || !env.RESEND_FROM) return json({ error: 'Chưa cấu hình dịch vụ email góp ý (Resend) trên Cloudflare.' }, 503);
       try {
         const data = await readJson(request);
         const name = String(data.name || '').trim().slice(0, 100);
@@ -76,46 +76,36 @@ export default {
         if (!name || !apartment || !message) return json({ error: 'Vui lòng nhập họ tên, số căn hộ và nội dung góp ý.' }, 400);
         if (String(data.website || '').trim()) return json({ ok: true });
         const email = await fetch('https://api.resend.com/emails', {
-          method: 'POST',
-          headers: { authorization: `Bearer ${env.RESEND_API_KEY}`, 'content-type': 'application/json' },
-          body: JSON.stringify({
-            from: env.RESEND_FROM,
-            to: [env.BQT_EMAIL],
-            subject: `Góp ý cư dân - Căn hộ ${apartment}`,
-            text: `GÓP Ý GỬI BAN QUẢN TRỊ\n\nHọ và tên: ${name}\nSố căn hộ: ${apartment}\n\nNội dung góp ý:\n${message}`
-          })
+          method: 'POST', headers: { authorization: `Bearer ${env.RESEND_API_KEY}`, 'content-type': 'application/json' },
+          body: JSON.stringify({ from: env.RESEND_FROM, to: [env.BQT_EMAIL], subject: `Góp ý cư dân - Căn hộ ${apartment}`, text: `GÓP Ý GỬI BAN QUẢN TRỊ\n\nHọ và tên: ${name}\nSố căn hộ: ${apartment}\n\nNội dung góp ý:\n${message}` })
         });
-        if (!email.ok) return json({ error: 'Chưa gửi được góp ý. Vui lòng thử lại sau.' }, 502);
+        if (!email.ok) return json({ error: 'Resend chưa chấp nhận email. Kiểm tra API key, domain gửi và RESEND_FROM.' }, 502);
         return json({ ok: true });
-      } catch (error) {
-        return json({ error: error instanceof SyntaxError ? 'Dữ liệu gửi lên không hợp lệ.' : (error.message || 'Không thể gửi góp ý lúc này.') }, 400);
-      }
+      } catch (error) { return json({ error: error instanceof SyntaxError ? 'Dữ liệu gửi lên không hợp lệ.' : (error.message || 'Không thể gửi góp ý lúc này.') }, 400); }
     }
 
     if (url.pathname.startsWith('/api/admin/')) {
       if (!originAllowed(request)) return json({ error: 'Yêu cầu không hợp lệ.' }, 403);
-      if (!env.ADMIN_PASSWORD || !env.SESSION_SECRET || env.SESSION_SECRET.length < 32) return json({ error: 'Chưa cấu hình tài khoản quản trị an toàn.' }, 503);
+      if (!env.ADMIN_PASSWORD || !env.SESSION_SECRET || env.SESSION_SECRET.length < 32) return json({ error: 'Thiếu cấu hình ADMIN_PASSWORD hoặc SESSION_SECRET (SESSION_SECRET cần tối thiểu 32 ký tự) trong Cloudflare Worker.' }, 503);
       if (url.pathname === '/api/admin/login' && request.method === 'POST') {
         try {
           const data = await readJson(request);
           const supplied = new TextEncoder().encode(String(data.password || ''));
           const configured = new TextEncoder().encode(env.ADMIN_PASSWORD);
-          const digest = async value => new Uint8Array(await crypto.subtle.digest('SHA-256', value));
-          const a = await digest(supplied), b = await digest(configured);
+          const a = new Uint8Array(await crypto.subtle.digest('SHA-256', supplied));
+          const b = new Uint8Array(await crypto.subtle.digest('SHA-256', configured));
           let diff = supplied.length ^ configured.length;
           for (let i = 0; i < a.length; i++) diff |= a[i] ^ b[i];
-          if (diff !== 0) return json({ error: 'Mật khẩu không chính xác.' }, 401);
+          if (diff !== 0) return json({ error: 'Mật khẩu không đúng với ADMIN_PASSWORD đã lưu trong Cloudflare Worker. Hãy cập nhật secret rồi deploy lại.' }, 401);
           const token = await createSession(env.SESSION_SECRET);
           return json({ ok: true }, 200, { 'set-cookie': `${COOKIE_NAME}=${encodeURIComponent(token)}; HttpOnly; Secure; SameSite=Strict; Path=/api/admin; Max-Age=${SESSION_SECONDS}` });
         } catch { return json({ error: 'Yêu cầu đăng nhập không hợp lệ.' }, 400); }
       }
-      if (url.pathname === '/api/admin/logout' && request.method === 'POST') {
-        return json({ ok: true }, 200, { 'set-cookie': `${COOKIE_NAME}=; HttpOnly; Secure; SameSite=Strict; Path=/api/admin; Max-Age=0` });
-      }
-      if (!await validSession(request, env.SESSION_SECRET)) return json({ error: 'Vui lòng đăng nhập tài khoản Ban Quản Trị.' }, 401);
+      if (url.pathname === '/api/admin/logout' && request.method === 'POST') return json({ ok: true }, 200, { 'set-cookie': `${COOKIE_NAME}=; HttpOnly; Secure; SameSite=Strict; Path=/api/admin; Max-Age=0` });
+      if (!await validSession(request, env.SESSION_SECRET)) return json({ error: 'Phiên đăng nhập hết hạn hoặc chưa đăng nhập. Vui lòng đăng nhập lại.' }, 401);
       if (url.pathname === '/api/admin/session' && request.method === 'GET') return json({ authenticated: true });
       if (url.pathname === '/api/admin/posts' && request.method === 'POST') {
-        if (!env.BQT_POSTS) return json({ error: 'Kho lưu trữ nội dung chưa được cấu hình.' }, 503);
+        if (!env.BQT_POSTS) return json({ error: 'Chưa cấu hình KV binding BQT_POSTS trong Cloudflare Worker.' }, 503);
         try {
           const data = await readJson(request);
           const title = String(data.title || '').trim().slice(0, 120);
@@ -124,7 +114,7 @@ export default {
           const kind = data.kind === 'activity' ? 'activity' : 'notice';
           if (!title || !/^\d{4}-\d{2}-\d{2}$/.test(date)) return json({ error: 'Tiêu đề và ngày đăng là bắt buộc.' }, 400);
           let file;
-          if (data.file && data.file.data) {
+          if (data.file?.data) {
             if (typeof data.file.data !== 'string' || data.file.data.length > 1_900_000) return json({ error: 'Tệp đính kèm quá lớn.' }, 413);
             if (!['application/pdf', 'image/jpeg', 'image/png', 'image/webp', 'image/gif'].includes(data.file.type)) return json({ error: 'Chỉ hỗ trợ PDF hoặc ảnh JPG, PNG, WEBP, GIF.' }, 400);
             file = { name: String(data.file.name || 'tep-dinh-kem').slice(0, 160), type: data.file.type, data: data.file.data };
