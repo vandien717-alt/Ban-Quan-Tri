@@ -1,12 +1,14 @@
-name = "becamex-ban-quan-tri"
+name = "ban-quan-tri-khu1"
 main = "gemini-code-1794647485960.js"
 compatibility_date = "2025-01-01"
 
 [assets]
 directory = "."
 binding = "ASSETS"
-run_worker_first = ["/api/*"]
+run_worker_first = ["/api/*", "/admin"]
 
-[[kv_namespaces]]
-binding = "BQT_POSTS"
-id = "ban-quan-tri-khu1"
+# Add the KV binding named BQT_POSTS in the Cloudflare dashboard before publishing posts.
+# For Wrangler deployment, uncomment the block below and replace the ID with the actual KV namespace ID.
+# [[kv_namespaces]]
+# binding = "BQT_POSTS"
+# id = "REPLACE_WITH_REAL_KV_NAMESPACE_ID"

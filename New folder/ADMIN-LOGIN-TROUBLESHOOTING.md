@@ -1,25 +1,24 @@
-# Sửa lỗi đăng nhập trang quản trị
+# Sửa lỗi đăng nhập trang quản trị (HTTP 404)
 
-Mở trang quản trị rồi nhấn Ctrl+F5 để tải lại `admin.js` mới. Lỗi chung trước đây không phân biệt được API chưa được triển khai và mật khẩu sai. Bản mới sẽ hiện thông báo cụ thể.
+Ảnh lỗi `API quản trị chưa được Worker xử lý (HTTP 404)` có nghĩa là trang web đang được phục vụ như file tĩnh, hoặc Worker đang chạy code cũ chỉ chuyển tiếp request sang static assets. Mật khẩu không phải nguyên nhân của lỗi này.
 
-## Kiểm tra API Worker
+## Đã sửa trong repository
 
-Mở trực tiếp địa chỉ `https://ban-quan-tri-khu1.vandienprint.workers.dev/api/health`.
+- Worker entry point `gemini-code-1794647485960.js` hiện có API `/api/health`, `/api/admin/login`, `/api/admin/session`, `/api/admin/logout`, `/api/admin/posts`, `/api/posts` và `/api/feedback`.
+- `wrangler.toml` giờ đặt tên Worker `ban-quan-tri-khu1` theo hostname người dùng cung cấp; bật Worker-first cho `/api/*`; `/admin` được chuyển tới `/admin.html`.
+- Đã bỏ KV ID giả `ban-quan-tri-khu1`. Đăng nhập chỉ cần Worker secrets; để lưu bài đăng cần thêm KV binding `BQT_POSTS` qua dashboard.
 
-- Nếu thấy JSON có `"worker":true`, Worker API đang chạy. `adminConfigured` cần là `true` để đăng nhập; giá trị `false` nghĩa là thiếu secret.
-- Nếu hiện trang HTML, 404 hoặc `worker` không phải `true`, deploy Worker/API chưa đúng. Chỉ tải file HTML tĩnh sẽ không chạy được đăng nhập.
+## Cấu hình trong Cloudflare Dashboard
 
-## Deploy lại Worker
+1. Chọn đúng account → **Workers & Pages** → Worker **ban-quan-tri-khu1**.
+2. Mở **Settings → Variables and Secrets**; thêm secrets cho **Production**: `ADMIN_PASSWORD` (mật khẩu do BQT chọn), `SESSION_SECRET` (chuỗi ngẫu nhiên tối thiểu 32 ký tự). Không paste bí mật vào GitHub.
+3. Vào **Storage & databases → Workers KV**, tạo namespace hoặc dùng namespace bài đăng đang có. Copy namespace ID.
+4. Trong Worker settings, **Bindings → Add → KV namespace**, variable name phải chính xác `BQT_POSTS`; chọn namespace; Save.
+5. Triển khai Worker bằng đúng entry point từ repo (`New folder/gemini-code-1794647485960.js`) với Static Assets directory `New folder` và Worker-first route `/api/*`. Nếu dashboard đang kết nối Git, production branch `main`, root directory `New folder`, deploy bằng Wrangler config tại thư mục đó. Đợi deployment mới thành công.
+6. Không tạo Worker khác: URL cần giữ là `ban-quan-tri-khu1.workers.dev`.
 
-Trong Cloudflare dashboard, đảm bảo deployment dùng module Worker `New folder/gemini-code-1794647485960.js`, assets directory `New folder`, và bật Worker-first cho `/api/*`. Nếu deploy bằng Wrangler, vào thư mục `New folder`, thay KV ID trong `wrangler.toml`, cài/đăng nhập Wrangler và chạy `wrangler deploy`.
+## Kiểm tra
 
-Đặt lại secrets cho đúng Worker/environment đang triển khai:
+Mở `https://ban-quan-tri-khu1.workers.dev/api/health`. Phải thấy JSON với `worker: true`, `adminConfigured: true`, `postsConfigured: true`. Nếu `worker: true` không xuất hiện, Cloudflare vẫn chưa triển khai entry point Worker này; sửa mật khẩu không giải quyết được HTTP 404. Sau đó vào `/admin`, đăng nhập bằng giá trị bạn đã đặt cho `ADMIN_PASSWORD`.
 
-```sh
-wrangler secret put ADMIN_PASSWORD
-wrangler secret put SESSION_SECRET
-```
-
-`SESSION_SECRET` phải dài ít nhất 32 ký tự. Nếu bạn cập nhật secret trên Production, hãy chắc chắn website đang mở là cùng Worker Production (không phải Preview/Development). Sau đó tải lại trang bằng Ctrl+F5 và nhập đúng giá trị `ADMIN_PASSWORD` mới.
-
-Không gửi mật khẩu hoặc giá trị secret vào chat/GitHub. Nếu API báo cấu hình đầy đủ nhưng mật khẩu vẫn sai, đặt lại `ADMIN_PASSWORD` bằng lệnh trên rồi thử lại. Lưu ý mật khẩu phân biệt chữ hoa/chữ thường và không tự thêm dấu cách đầu/cuối.
+Nếu đã đặt secrets nhưng health trả `adminConfigured: false`, đặt lại secrets ở môi trường **Production** cho đúng Worker. Không gửi mật khẩu, `SESSION_SECRET`, API key hay cookie phiên trong chat.
