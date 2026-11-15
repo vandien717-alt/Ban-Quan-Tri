@@ -7,8 +7,9 @@ directory = "."
 binding = "ASSETS"
 run_worker_first = ["/api/*", "/admin"]
 
-# Add the KV binding named BQT_POSTS in the Cloudflare dashboard before publishing posts.
-# For Wrangler deployment, uncomment the block below and replace the ID with the actual KV namespace ID.
+# Login works with Worker secrets alone.
+# For publishing posts, bind a Cloudflare KV namespace named BQT_POSTS in the dashboard.
+# Or uncomment below and replace the ID with the actual KV namespace ID:
 # [[kv_namespaces]]
 # binding = "BQT_POSTS"
-# id = "REPLACE_WITH_REAL_KV_NAMESPACE_ID"
+# id = "YOUR_REAL_KV_NAMESPACE_ID"
