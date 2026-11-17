@@ -12,6 +12,68 @@
   <link rel="stylesheet" href="styles.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/js/all.min.js" defer></script>
   <script src="app.js" defer></script>
+  <style>
+    #bqt-toggle {
+      max-width: 900px;
+      margin: 30px auto;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+    }
+    #bqt-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(135deg, #0d47a1, #1976d2);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 20px 24px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    #bqt-btn:hover { background: linear-gradient(135deg, #1565c0, #1e88e5); }
+    #bqt-btn .bqt-icon {
+      font-size: 1.5rem;
+      transition: transform 0.3s;
+    }
+    #bqt-btn.open .bqt-icon { transform: rotate(180deg); }
+    #bqt-content {
+      display: none;
+      margin-top: 16px;
+      padding: 20px 0;
+    }
+    #bqt-content.show { display: block; }
+    .bqt-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .bqt-card {
+      background: #f5f7fa;
+      border: 2px solid #e0e7ee;
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+    }
+    .bqt-card.leader { background: linear-gradient(135deg,#e3f2fd,#bbdefb); border-color: #1976d2; }
+    .bqt-card.deputy { background: linear-gradient(135deg,#f3e5f5,#e1bee7); border-color: #7b1fa2; }
+    .bqt-avatar {
+      width: 80px; height: 80px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; font-weight: 700; color: #fff;
+      margin: 0 auto 16px;
+    }
+    .bqt-card.leader .bqt-avatar { background: #d32f2f; }
+    .bqt-card.deputy .bqt-avatar { background: #7b1fa2; }
+    .bqt-card .bqt-avatar { background: #1976d2; }
+    .bqt-name { font-size: 1.1rem; font-weight: 700; color: #1a237e; margin-bottom: 6px; }
+    .bqt-role { font-size: 0.95rem; color: #555; font-style: italic; }
+    .bqt-card.leader .bqt-role { color: #d32f2f; font-weight: 600; font-style: normal; }
+    .bqt-card.deputy .bqt-role { color: #7b1fa2; font-weight: 600; font-style: normal; }
+    @media (max-width: 600px) { .bqt-grid { grid-template-columns: 1fr; } }
+  </style>
 </head>
 <body>
   <header class="site-header" id="top">
@@ -29,7 +91,7 @@
         <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-links"><i class="fa-solid fa-bars"></i> Danh mục</button>
         <ul class="nav-links" id="nav-links">
           <li><a class="active" href="#top"><i class="fa-solid fa-house"></i> Trang chủ</a></li>
-          <li><a href="#about">Giới thiệu BQT</a></li> 
+          <li><a href="#about">Giới thiệu BQT</a></li>
           <li><a href="#notices">Thông báo</a></li>
           <li><a href="#documents">Văn bản BQT</a></li>
           <li><a href="#finance">Tài chính</a></li>
@@ -48,6 +110,57 @@
         <p class="hero-note">Chung sức vì môi trường sống xanh, an toàn và gắn kết.</p>
       </div>
     </section>
+
+    <!-- ====== BQT: Ô giới thiệu Ban Quản trị (click để mở/đóng) ====== -->
+    <section class="container" aria-label="Giới thiệu Ban Quản trị">
+      <div id="bqt-toggle">
+        <button id="bqt-btn" onclick="bqtToggle()">
+          <span>📋 Giới thiệu Ban Quản trị (2025 – 2027)</span>
+          <span class="bqt-icon">⌄</span>
+        </button>
+        <div id="bqt-content">
+          <div class="bqt-grid">
+            <div class="bqt-card leader">
+              <div class="bqt-avatar">L</div>
+              <div class="bqt-name">Ông Võ Thành Luật</div>
+              <div class="bqt-role">Trưởng Ban Quản trị</div>
+            </div>
+            <div class="bqt-card deputy">
+              <div class="bqt-avatar">T</div>
+              <div class="bqt-name">Ông Nguyễn Ngọc Đăng Triều</div>
+              <div class="bqt-role">Phó Trưởng Ban Quản trị</div>
+            </div>
+            <div class="bqt-card">
+              <div class="bqt-avatar">L</div>
+              <div class="bqt-name">Ông Phan Văn Lâm</div>
+              <div class="bqt-role">Thành viên</div>
+            </div>
+            <div class="bqt-card">
+              <div class="bqt-avatar">T</div>
+              <div class="bqt-name">Ông Huỳnh Thanh Trà</div>
+              <div class="bqt-role">Thành viên</div>
+            </div>
+            <div class="bqt-card">
+              <div class="bqt-avatar">D</div>
+              <div class="bqt-name">Ông Thạch Công Danh</div>
+              <div class="bqt-role">Thành viên</div>
+            </div>
+            <div class="bqt-card">
+              <div class="bqt-avatar">H</div>
+              <div class="bqt-name">Bà Võ Thúy Hằng</div>
+              <div class="bqt-role">Thành viên</div>
+            </div>
+            <div class="bqt-card">
+              <div class="bqt-avatar">D</div>
+              <div class="bqt-name">Ông Võ Văn Diễn</div>
+              <div class="bqt-role">Thành viên</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- ====== HẾT BQT ====== -->
+
     <section class="services container" aria-label="Danh mục tiện ích">
       <a class="service-card" href="#notices"><i class="fa-solid fa-bullhorn"></i><strong>01. Thông báo</strong><span>Thông tin đến cư dân</span></a>
       <a class="service-card" href="#documents"><i class="fa-solid fa-file-lines"></i><strong>02. Văn bản BQT</strong><span>Công văn, quyết định</span></a>
@@ -94,121 +207,13 @@
       <div class="copyright"><p>Bản quyền © <span id="current-year">2026</span> - Ban Quản Trị NOXH Becamex – Khu 1B, Mỹ Phước</p><em>Cùng nhau xây dựng cuộc sống tốt đẹp hơn!</em></div>
     </div>
   </footer>
-</body!-== (click để mở/đóng) ====== -->
-<style>
-  #bqt-toggle {
-    max-width: 900px;
-    margin: 30px auto;
-    font-family: 'Segoe UI', Tahoma, sans-serif;
-  }
-  #bqt-btn {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: linear-gradient(135deg, #0d47a1, #1976d2);
-    color: #fff;
-    border: none;
-    border-radius: 12px;
-    padding: 20px 24px;
-    font-size: 1.2rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-  #bqt-btn:hover { background: linear-gradient(135deg, #1565c0, #1e88e5); }
-  #bqt-btn .bqt-icon {
-    font-size: 1.5rem;
-    transition: transform 0.3s;
-  }
-  #bqt-btn.open .bqt-icon { transform: rotate(180deg); }
-  #bqt-content {
-    display: none;
-    margin-top: 16px;
-    padding: 20px 0;
-  }
-  #bqt-content.show { display: block; }
-  .bqt-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-  }
-  .bqt-card {
-    background: #f5f7fa;
-    border: 2px solid #e0e7ee;
-    border-radius: 12px;
-    padding: 24px;
-    text-align: center;
-  }
-  .bqt-card.leader { background: linear-gradient(135deg,#e3f2fd,#bbdefb); border-color: #1976d2; }
-  .bqt-card.deputy { background: linear-gradient(135deg,#f3e5f5,#e1bee7); border-color: #7b1fa2; }
-  .bqt-avatar {
-    width: 80px; height: 80px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 2rem; font-weight: 700; color: #fff;
-    margin: 0 auto 16px;
-  }
-  .bqt-card.leader .bqt-avatar { background: #d32f2f; }
-  .bqt-card.deputy .bqt-avatar { background: #7b1fa2; }
-  .bqt-card .bqt-avatar { background: #1976d2; }
-  .bqt-name { font-size: 1.1rem; font-weight: 700; color: #1a237e; margin-bottom: 6px; }
-  .bqt-role { font-size: 0.95rem; color: #555; font-style: italic; }
-  .bqt-card.leader .bqt-role { color: #d32f2f; font-weight: 600; font-style: normal; }
-  .bqt-card.deputy .bqt-role { color: #7b1fa2; font-weight: 600; font-style: normal; }
-  @media (max-width: 600px) { .bqt-grid { grid-template-columns: 1fr; } }
-</style>
-
-<div id="bqt-toggle">
-  <button id="bqt-btn" onclick="bqtToggle()">
-    <span>📋 Giới thiệu Ban Quản trị (2025 – 2027)</span>
-    <span class="bqt-icon">⌄</span>
-  </button>
-  <div id="bqt-content">
-    <div class="bqt-grid">
-      <div class="bqt-card leader">
-        <div class="bqt-avatar">L</div>
-        <div class="bqt-name">Ông Võ Thành Luật</div>
-        <div class="bqt-role">Trưởng Ban Quản trị</div>
-      </div>
-      <div class="bqt-card deputy">
-        <div class="bqt-avatar">T</div>
-        <div class="bqt-name">Ông Nguyễn Ngọc Đăng Triều</div>
-        <div class="bqt-role">Phó Trưởng Ban Quản trị</div>
-      </div>
-      <div class="bqt-card">
-        <div class="bqt-avatar">L</div>
-        <div class="bqt-name">Ông Phan Văn Lâm</div>
-        <div class="bqt-role">Thành viên</div>
-      </div>
-      <div class="bqt-card">
-        <div class="bqt-avatar">T</div>
-        <div class="bqt-name">Ông Huỳnh Thanh Trà</div>
-        <div class="bqt-role">Thành viên</div>
-      </div>
-      <div class="bqt-card">
-        <div class="bqt-avatar">D</div>
-        <div class="bqt-name">Ông Thạch Công Danh</div>
-        <div class="bqt-role">Thành viên</div>
-      </div>
-      <div class="bqt-card">
-        <div class="bqt-avatar">H</div>
-        <div class="bqt-name">Bà Võ Thúy Hằng</div>
-        <div class="bqt-role">Thành viên</div>
-      </div>
-      <div class="bqt-card">
-        <div class="bqt-avatar">D</div>
-        <div class="bqt-name">Ông Võ Văn Diễn</div>
-        <div class="bqt-role">Thành viên</div>
-      </div>
-    </div>
-  </div>
-</div>
-<script>
-  function bqtToggle() {
-    var btn = document.getElementById('bqt-btn');
-    var content = document.getElementById('bqt-content');
-    btn.classList.toggle('open');
-    content.classList.toggle('show');
-  }</script>
-<!-- ====== HẾT BQT ====== -->> 
+  <script>
+    function bqtToggle() {
+      var btn = document.getElementById('bqt-btn');
+      var content = document.getElementById('bqt-content');
+      btn.classList.toggle('open');
+      content.classList.toggle('show');
+    }
+  </script>
+</body>
 </html>
