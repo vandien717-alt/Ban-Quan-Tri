@@ -29,7 +29,72 @@
         <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-links"><i class="fa-solid fa-bars"></i> Danh mục</button>
         <ul class="nav-links" id="nav-links">
           <li><a class="active" href="#top"><i class="fa-solid fa-house"></i> Trang chủ</a></li>
-          <li><a href="#about">Giới thiệu BQT<!-== (click để mở/đóng) ====== -->
+          <li><a href="#about">Giới thiệu BQT</a></li> 
+          <li><a href="#notices">Thông báo</a></li>
+          <li><a href="#documents">Văn bản BQT</a></li>
+          <li><a href="#finance">Tài chính</a></li>
+          <li><a href="#activities">Hoạt động</a></li>
+          <li><a href="#contact" data-feedback="true">Liên hệ – Góp ý</a></li>
+          <li><a href="admin.html"><i class="fa-solid fa-lock"></i> Quản trị BQT</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+  <main>
+    <section class="hero" id="about">
+      <div class="container hero-inner">
+        <p class="hero-kicker">Cùng chung tay xây dựng</p>
+        <h1>KHU DÂN CƯ VĂN MINH<br><span>– AN TOÀN – HẠNH PHÚC</span></h1>
+        <p class="hero-note">Chung sức vì môi trường sống xanh, an toàn và gắn kết.</p>
+      </div>
+    </section>
+    <section class="services container" aria-label="Danh mục tiện ích">
+      <a class="service-card" href="#notices"><i class="fa-solid fa-bullhorn"></i><strong>01. Thông báo</strong><span>Thông tin đến cư dân</span></a>
+      <a class="service-card" href="#documents"><i class="fa-solid fa-file-lines"></i><strong>02. Văn bản BQT</strong><span>Công văn, quyết định</span></a>
+      <a class="service-card" href="#finance"><i class="fa-solid fa-wallet"></i><strong>03. Tài chính</strong><span>Thu chi, báo cáo</span></a>
+      <a class="service-card" href="#activities"><i class="fa-solid fa-shield-halved"></i><strong>04. An ninh – PCCC</strong><span>An toàn khu dân cư</span></a>
+      <a class="service-card" href="#activities"><i class="fa-solid fa-screwdriver-wrench"></i><strong>05. Bảo trì – Sửa chữa</strong><span>Hạ tầng, thiết bị</span></a>
+      <a class="service-card" href="#contact" data-feedback="true"><i class="fa-solid fa-people-group"></i><strong>06. Liên hệ – Góp ý</strong><span>Tiếp nhận phản ánh</span></a>
+    </section>
+    <section class="container dashboard" aria-label="Thông tin mới nhất">
+      <section class="panel" id="notices">
+        <div class="panel-heading"><h2><i class="fa-solid fa-bullhorn"></i> TIN TỨC NỔI BẬT</h2><a href="#notice-list">Xem tin mới <i class="fa-solid fa-arrow-right"></i></a></div>
+        <div class="panel-body news-list" id="notice-list" aria-live="polite"></div>
+      </section>
+      <section class="panel" id="documents">
+        <div class="panel-heading"><h2><i class="fa-solid fa-file-lines"></i> VĂN BẢN MỚI</h2><a href="admin.html">Cập nhật <i class="fa-solid fa-arrow-right"></i></a></div>
+        <div class="panel-body document-list">
+          <article class="document-item"><i class="fa-solid fa-file-pdf pdf-icon"></i><div><h3>Thông báo số 18/TB-BQT về tặng quà Trung thu</h3><time datetime="2026-09-08">08/09/2026</time></div></article>
+          <article class="document-item"><i class="fa-solid fa-file-pdf pdf-icon"></i><div><h3>Quyết định số 12/QĐ-BQT về công tác bảo trì</h3><time datetime="2026-09-05">05/09/2026</time></div></article>
+          <article class="document-item"><i class="fa-solid fa-file-pdf pdf-icon"></i><div><h3>Biên bản họp BQT ngày 01/09/2026</h3><time datetime="2026-09-01">01/09/2026</time></div></article>
+        </div>
+      </section>
+      <section class="panel finance-panel" id="finance">
+        <div class="panel-heading"><h2><i class="fa-solid fa-sack-dollar"></i> THÔNG TIN TÀI CHÍNH</h2></div>
+        <div class="panel-body finance-body">
+          <div class="finance-summary" aria-label="Tổng hợp thu chi tháng 09/2026">
+            <div class="finance-stat finance-income"><span>Tổng thu tháng 09/2026</span><strong>159.000.000 đ</strong></div>
+            <div class="finance-stat finance-expense"><span>Tổng chi tháng 09/2026</span><strong>158.500.000 đ</strong></div>
+            <div class="finance-stat finance-balance"><span>Còn lại</span><strong>500.000 đ</strong></div>
+          </div>
+          <a class="finance-detail" href="#contact" data-feedback="true">Chi tiết thu chi <i class="fa-solid fa-chevron-right"></i></a>
+        </div>
+      </section>
+      <section class="panel activities-panel" id="activities">
+        <div class="panel-heading"><h2><i class="fa-solid fa-people-group"></i> HOẠT ĐỘNG BAN QUẢN TRỊ</h2><a href="admin.html">Đăng hoạt động <i class="fa-solid fa-arrow-right"></i></a></div>
+        <div class="panel-body activity-list" id="activity-list" aria-live="polite"></div>
+      </section>
+    </section>
+    <section class="community-banner"><div class="container"><i class="fa-solid fa-shield-halved"></i><strong>Vì một cộng đồng cư dân đoàn kết, văn minh và phát triển</strong></div></section>
+  </main>
+  <footer class="site-footer" id="contact">
+    <div class="container footer-inner">
+      <div class="footer-contact"><i class="fa-solid fa-location-dot"></i><p><strong>Địa chỉ văn phòng BQT:</strong><br>A2.1.15, Block A2, Tầng 1,<br>Khu phố 6, Phường Thới Hòa, TP Hồ Chí Minh</p></div>
+      <div class="footer-contact"><i class="fa-solid fa-envelope"></i><p><strong>Email liên hệ:</strong><br><a href="mailto:bqt.noxh.becamex1b@gmail.com">bqt.noxh.becamex1b@gmail.com</a><br><button class="text-link" type="button" data-feedback="true">Gửi góp ý riêng</button></p></div>
+      <div class="copyright"><p>Bản quyền © <span id="current-year">2026</span> - Ban Quản Trị NOXH Becamex – Khu 1B, Mỹ Phước</p><em>Cùng nhau xây dựng cuộc sống tốt đẹp hơn!</em></div>
+    </div>
+  </footer>
+</body!-== (click để mở/đóng) ====== -->
 <style>
   #bqt-toggle {
     max-width: 900px;
@@ -145,70 +210,5 @@
     btn.classList.toggle('open');
     content.classList.toggle('show');
   }</script>
-<!-- ====== HẾT BQT ====== --> </a></li> 
-          <li><a href="#notices">Thông báo</a></li>
-          <li><a href="#documents">Văn bản BQT</a></li>
-          <li><a href="#finance">Tài chính</a></li>
-          <li><a href="#activities">Hoạt động</a></li>
-          <li><a href="#contact" data-feedback="true">Liên hệ – Góp ý</a></li>
-          <li><a href="admin.html"><i class="fa-solid fa-lock"></i> Quản trị BQT</a></li>
-        </ul>
-      </div>
-    </nav>
-  </header>
-  <main>
-    <section class="hero" id="about">
-      <div class="container hero-inner">
-        <p class="hero-kicker">Cùng chung tay xây dựng</p>
-        <h1>KHU DÂN CƯ VĂN MINH<br><span>– AN TOÀN – HẠNH PHÚC</span></h1>
-        <p class="hero-note">Chung sức vì môi trường sống xanh, an toàn và gắn kết.</p>
-      </div>
-    </section>
-    <section class="services container" aria-label="Danh mục tiện ích">
-      <a class="service-card" href="#notices"><i class="fa-solid fa-bullhorn"></i><strong>01. Thông báo</strong><span>Thông tin đến cư dân</span></a>
-      <a class="service-card" href="#documents"><i class="fa-solid fa-file-lines"></i><strong>02. Văn bản BQT</strong><span>Công văn, quyết định</span></a>
-      <a class="service-card" href="#finance"><i class="fa-solid fa-wallet"></i><strong>03. Tài chính</strong><span>Thu chi, báo cáo</span></a>
-      <a class="service-card" href="#activities"><i class="fa-solid fa-shield-halved"></i><strong>04. An ninh – PCCC</strong><span>An toàn khu dân cư</span></a>
-      <a class="service-card" href="#activities"><i class="fa-solid fa-screwdriver-wrench"></i><strong>05. Bảo trì – Sửa chữa</strong><span>Hạ tầng, thiết bị</span></a>
-      <a class="service-card" href="#contact" data-feedback="true"><i class="fa-solid fa-people-group"></i><strong>06. Liên hệ – Góp ý</strong><span>Tiếp nhận phản ánh</span></a>
-    </section>
-    <section class="container dashboard" aria-label="Thông tin mới nhất">
-      <section class="panel" id="notices">
-        <div class="panel-heading"><h2><i class="fa-solid fa-bullhorn"></i> TIN TỨC NỔI BẬT</h2><a href="#notice-list">Xem tin mới <i class="fa-solid fa-arrow-right"></i></a></div>
-        <div class="panel-body news-list" id="notice-list" aria-live="polite"></div>
-      </section>
-      <section class="panel" id="documents">
-        <div class="panel-heading"><h2><i class="fa-solid fa-file-lines"></i> VĂN BẢN MỚI</h2><a href="admin.html">Cập nhật <i class="fa-solid fa-arrow-right"></i></a></div>
-        <div class="panel-body document-list">
-          <article class="document-item"><i class="fa-solid fa-file-pdf pdf-icon"></i><div><h3>Thông báo số 18/TB-BQT về tặng quà Trung thu</h3><time datetime="2026-09-08">08/09/2026</time></div></article>
-          <article class="document-item"><i class="fa-solid fa-file-pdf pdf-icon"></i><div><h3>Quyết định số 12/QĐ-BQT về công tác bảo trì</h3><time datetime="2026-09-05">05/09/2026</time></div></article>
-          <article class="document-item"><i class="fa-solid fa-file-pdf pdf-icon"></i><div><h3>Biên bản họp BQT ngày 01/09/2026</h3><time datetime="2026-09-01">01/09/2026</time></div></article>
-        </div>
-      </section>
-      <section class="panel finance-panel" id="finance">
-        <div class="panel-heading"><h2><i class="fa-solid fa-sack-dollar"></i> THÔNG TIN TÀI CHÍNH</h2></div>
-        <div class="panel-body finance-body">
-          <div class="finance-summary" aria-label="Tổng hợp thu chi tháng 09/2026">
-            <div class="finance-stat finance-income"><span>Tổng thu tháng 09/2026</span><strong>159.000.000 đ</strong></div>
-            <div class="finance-stat finance-expense"><span>Tổng chi tháng 09/2026</span><strong>158.500.000 đ</strong></div>
-            <div class="finance-stat finance-balance"><span>Còn lại</span><strong>500.000 đ</strong></div>
-          </div>
-          <a class="finance-detail" href="#contact" data-feedback="true">Chi tiết thu chi <i class="fa-solid fa-chevron-right"></i></a>
-        </div>
-      </section>
-      <section class="panel activities-panel" id="activities">
-        <div class="panel-heading"><h2><i class="fa-solid fa-people-group"></i> HOẠT ĐỘNG BAN QUẢN TRỊ</h2><a href="admin.html">Đăng hoạt động <i class="fa-solid fa-arrow-right"></i></a></div>
-        <div class="panel-body activity-list" id="activity-list" aria-live="polite"></div>
-      </section>
-    </section>
-    <section class="community-banner"><div class="container"><i class="fa-solid fa-shield-halved"></i><strong>Vì một cộng đồng cư dân đoàn kết, văn minh và phát triển</strong></div></section>
-  </main>
-  <footer class="site-footer" id="contact">
-    <div class="container footer-inner">
-      <div class="footer-contact"><i class="fa-solid fa-location-dot"></i><p><strong>Địa chỉ văn phòng BQT:</strong><br>A2.1.15, Block A2, Tầng 1,<br>Khu phố 6, Phường Thới Hòa, TP Hồ Chí Minh</p></div>
-      <div class="footer-contact"><i class="fa-solid fa-envelope"></i><p><strong>Email liên hệ:</strong><br><a href="mailto:bqt.noxh.becamex1b@gmail.com">bqt.noxh.becamex1b@gmail.com</a><br><button class="text-link" type="button" data-feedback="true">Gửi góp ý riêng</button></p></div>
-      <div class="copyright"><p>Bản quyền © <span id="current-year">2026</span> - Ban Quản Trị NOXH Becamex – Khu 1B, Mỹ Phước</p><em>Cùng nhau xây dựng cuộc sống tốt đẹp hơn!</em></div>
-    </div>
-  </footer>
-</body> 
+<!-- ====== HẾT BQT ====== -->> 
 </html>
